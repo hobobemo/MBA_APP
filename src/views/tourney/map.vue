@@ -1,10 +1,11 @@
 <script setup>
   import { onMounted, onBeforeUnmount } from "vue";
-  import { IonPage, IonContent } from "@ionic/vue";
+  import { IonPage, IonContent, IonFab, IonFabButton, IonIcon, } from "@ionic/vue";
   import L from "leaflet";
-  import { ref as dbRef, onValue } from "firebase/database";
-  import { ref as storageRef, getDownloadURL } from "firebase/storage";
+  import { ref as dbRef, onValue, push, set } from "firebase/database";
+  import { ref as storageRef, getDownloadURL, uploadBytes  } from "firebase/storage";
   import { database, storage } from "@/firebase"; 
+  import AddMarker from '@/components/maps/addMarker.vue';
 
   let map = null;
   let markersLayer = null;
@@ -75,32 +76,40 @@
 
   onMounted(() => {
     setTimeout(() => {
-      if (!map) {
-        map = L.map("map").setView([38.786259, -104.722978], 17);
-
-        L.tileLayer("https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
-          attribution: '&copy; OpenStreetMap contributors'
-        }).addTo(map);
-
-        markersLayer = L.layerGroup().addTo(map);
-
-        loadMarkers();
-        loadPolys()
+      if (map) {
+        map.remove();
+        map = null;
       }
-    }, 500);
+
+      map = L.map("map", { 
+        preferCanvas: true,
+      }).setView([38.786259, -104.722978], 17);
+
+      L.tileLayer("https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}", {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(map);
+
+      markersLayer = L.layerGroup().addTo(map);
+
+      loadMarkers();
+      loadPolys();
+    }, 500); // Ensure delay for cleanup
   });
 
   onBeforeUnmount(() => {
-    if (map) {
-      map.remove();
+    if (map !== null) {
+      map.remove(); // Completely remove the Leaflet map
+      map = null;
     }
   });
+
 </script>
 
 <template>
   <ion-page>
     <ion-content :fullscreen="true">
       <div id="map" />
+      <AddMarker />
     </ion-content>
   </ion-page>
 </template>

@@ -18,11 +18,6 @@ const adminRoutes = [
         component: () => import('@/views/admin/sponsors.vue'),
         beforeEnter: authGuard 
     }, { 
-        path: "/admin/map", 
-        meta: { layout: Default },
-        component: () => import('@/views/admin/map.vue'),
-        beforeEnter: authGuard 
-    }, { 
         path: "/admin/notifications", 
         meta: { layout: Default },
         component: () => import('@/views/admin/notification.vue'),

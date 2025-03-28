@@ -51,7 +51,6 @@ export const useUserStore = defineStore('user', {
             this.view = view;
         },
         async setLevel(level){
-            console.log(await level);
             this.user.level = await level;
         },
         async logout(){

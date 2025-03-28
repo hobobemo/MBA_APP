@@ -18,13 +18,11 @@ async function signInWithGoogle() {
     if (result.credential?.idToken) {
       const credential = GoogleAuthProvider.credential(result.credential.idToken);
       const userCredential = await signInWithCredential(auth, credential);
+
       await setUser(userCredential.user);
       await getUser(userCredential.user.uid);
 
       userStore.login(userCredential.user);
-
-      console.log(userLevel.value?.level); // Use optional chaining
-
       if (userLevel.value?.level) { 
         userStore.setLevel(userLevel.value.level);
       }
@@ -37,7 +35,6 @@ async function signInWithGoogle() {
 }
 
 async function getUser(userId) {
-  console.log('Fetching user data for:', userId);
   const dataRef = dbRef(database, "users/" + userId);
 
   try {
@@ -61,7 +58,6 @@ async function setUser(user) {
       photoUrl: user.photoURL,
       uid: user.uid,
     });
-    console.log("User data saved successfully!");
   } catch (error) {
     console.error("Error saving user data:", error);
   }
