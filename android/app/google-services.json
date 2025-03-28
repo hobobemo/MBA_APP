@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "773568031624",
+    "firebase_url": "https://band-aid-575fe-default-rtdb.firebaseio.com",
+    "project_id": "band-aid-575fe",
+    "storage_bucket": "band-aid-575fe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773568031624:android:ee3c07fc79e847c259683d",
+        "android_client_info": {
+          "package_name": "app.militarybandaid.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773568031624-jc0ulp4hsml73ok9sa6d5lunaojhhda3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.militarybandaid.mobile",
+            "certificate_hash": "041e9832db68b603feffe849ea3ae5b6df0fece9"
+          }
+        },
+        {
+          "client_id": "773568031624-7icvke67vbd91kgjmj78293574866ja8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvA4jFP9yYYzUtTBM0W09vT_vTPA1ilNU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773568031624-7icvke67vbd91kgjmj78293574866ja8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

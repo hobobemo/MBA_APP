@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Military Band-Aid</string>
+    <string name="title_activity_main">Military Band-Aid</string>
+    <string name="package_name">app.militarybandaid.mobile</string>
+    <string name="custom_url_scheme">app.militarybandaid.mobile</string>
+    <string name="default_web_client_id">773568031624-7icvke67vbd91kgjmj78293574866ja8.apps.googleusercontent.com</string>
+</resources>
