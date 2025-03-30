@@ -1,4 +1,5 @@
 import Default from '@/layouts/default.vue';
+import { authGuard } from "./authGuard";
 
 const homeRoutes = [
   {

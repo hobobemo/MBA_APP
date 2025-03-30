@@ -46,4 +46,22 @@ export default {
         const returnData = response.data
         return returnData;
     },
+    async getStoreCatalog() {
+        const options = {
+            url: baseUrl.value + '/store/catalog',
+            headers: getSettings.headers,
+        }
+        const response = await CapacitorHttp.get(options);
+        const returnData = response.data
+        return returnData;
+    },
+    async getStoreCatalogImage(id) {
+        const options = {
+            url: baseUrl.value + '/store/catalog/image/' + id,
+            headers: getSettings.headers,
+        }
+        const response = await CapacitorHttp.get(options);
+        const returnData = response.data
+        return returnData;
+    },
 };

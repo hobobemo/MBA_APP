@@ -3,11 +3,18 @@ import { NavigationGuardNext, RouteLocationNormalized } from "vue-router";
 
 export function authGuard(to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) {
   const auth = getAuth();
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      next(); // ✅ Allow access
-    } else {
-      next("/about"); // 🔒 Redirect if not authenticated
-    }
-  });
+
+  // Check immediately
+  if (auth.currentUser) {
+    next(); // ✅ Allow access
+  } else {
+    // If currentUser is null, wait for auth state change
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        next(); // ✅ Allow access after login
+      } else {
+        next("/about"); // 🔒 Redirect to About Us page
+      }
+    });
+  }
 }

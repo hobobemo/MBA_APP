@@ -38,7 +38,7 @@
             href: '/food',
             icon: fastFood,
             size: 'small',
-            disabled: true,
+            disabled: false,
         },
     ];
 </script>
@@ -51,7 +51,3 @@
         </ion-tab-button>
     </ion-tab-bar>
 </template>
-
-<style scoped>
-
-</style>

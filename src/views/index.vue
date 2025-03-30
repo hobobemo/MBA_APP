@@ -1,29 +1,11 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import { IonPage, IonContent, IonProgressBar, useIonRouter } from '@ionic/vue';
+import { IonPage, IonContent, IonProgressBar, } from '@ionic/vue';
 import Header from '@/components/shared/header.vue';
 import Fields from '@/components/home/fields.vue';
 import Events from '@/components/home/events.vue';
 import Section from '@/components/shared/section.vue';
 import LatestNews from '@/components/home/latest.vue';
-import { useUserStore } from '@/stores/userStore.js';
 
-const userStore = useUserStore();
-const router = useIonRouter();
-let isLoading = ref(true);
-
-onMounted(() => {
-  isLoading.value = true;
-
-  // Ensure userStore is available and check authentication
-  if (!userStore?.auth) {
-    router.replace('/about'); // Use `replace` to prevent navigation history issues
-  } else {
-    router.replace('/index'); // Optional: Ensure they are in `/index` if logged in
-  }
-
-  isLoading.value = false;
-});
 </script>
 
 <template>

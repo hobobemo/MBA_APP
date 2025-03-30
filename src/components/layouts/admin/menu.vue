@@ -12,31 +12,37 @@
       icon: chatbubblesOutline,
       href: '/admin/chat',
       title: 'Chat',
+      level: 9,
       disabled: false,
     }, { 
       icon: personOutline,
       href: '/admin/users',
       title: 'Users',
+      level: 10,
       disabled: false,
     }, { 
       icon: documentOutline,
       href: '/admin/articles',
       title: 'Articles',
+      level: 10,
       disabled: false,
     }, { 
       icon: locateOutline,
       href: '/admin/map',
       title: 'Map',
+      level: 10,
       disabled: false,
     }, { 
       icon: walletOutline,
       href: '/admin/sponsors',
       title: 'Sponsors',
+      level: 8,
       disabled: false,
     }, { 
       icon: notificationsOutline,
       href: '/admin/notifications',
       title: 'Notifications',
+      level: 10,
       disabled: false,
     },
   ];
@@ -65,10 +71,13 @@
 
     <ion-content color="white" class="menu-container">
       <ion-list class="list">
-          <ion-item v-for="link in links" :key="link.title" @click="closeMenus()" color="white" :router-link="link.href" :disabled="link.disabled">
-              <ion-label color="primary" slot="end">{{ link.title }}</ion-label>
-              <ion-icon :icon="link.icon" aria-hidden="true" size="large" slot="end" color="primary"></ion-icon>
-          </ion-item>
+          <div v-for="link in links" :key="link.title">
+            <ion-item v-if="userStore.getLevel >= link.level"  @click="closeMenus()" color="white" :router-link="link.href" :disabled="link.disabled">
+                <ion-label color="primary" slot="end">{{ link.title }}</ion-label>
+                <ion-icon :icon="link.icon" aria-hidden="true" size="large" slot="end" color="primary"></ion-icon>
+            </ion-item>
+          </div>
+
       </ion-list>
       <div class="menu-container-left-stripe-1"></div>
       <div class="menu-container-left-stripe-2"></div>
