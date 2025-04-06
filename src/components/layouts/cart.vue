@@ -19,11 +19,16 @@
       foodStore.removeItem(value);
     }
 
-    async function checkout(){
+    async function checkout() {
       isLoading.value = true;
-      const response = await API.getStoreCheckout(foodStore.items);
-      await Browser.open({url: response.payment_link.url})
-      isLoading.value = false;
+      try {
+        const response = await API.getStoreCheckout(foodStore.items, foodStore.getCartId);
+        await Browser.open({ url: response.payment_link.url });
+      } catch (error) {
+        console.error('Checkout error:', error);
+      } finally {
+        isLoading.value = false;
+      }
     }
 </script>
 

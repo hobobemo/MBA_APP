@@ -5,7 +5,9 @@
   import Item from '@/components/food/item.vue';
   import { Swiper, SwiperSlide } from 'swiper/vue';
   import 'swiper/css';
+  import { useFoodStore } from '@/stores/foodStore.js';
 
+  const foodStore = useFoodStore();
   const pageTitle = ref('Food');
   let items = ref([]);
   let isLoading = ref(true);
@@ -13,6 +15,9 @@
   async function getItems(){
     const response = await API.getStoreCatalog();
     items.value = response.objects;
+    if(!foodStore.getCartId){
+      foodStore.setCartId();
+    }
     isLoading.value = false;
   }
 

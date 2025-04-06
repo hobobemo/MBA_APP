@@ -64,11 +64,14 @@ export default {
         const returnData = response.data
         return returnData;
     },
-    async getStoreCheckout(formData) {
+    async getStoreCheckout(formData, cartId) {
         const options = {
             url: baseUrl.value + '/store/checkout',
             headers: postSettings.headers,
-            data: formData,
+            data: {
+                id: cartId,
+                items: formData,
+            }
         }
         const response = await CapacitorHttp.post(options);
         const returnData = response.data

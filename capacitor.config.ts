@@ -12,11 +12,9 @@ const config: CapacitorConfig = {
       skipNativeAuth: false,
       providers: ["google.com"]
     },
-    CustomURLScheme: {
-      scheme: 'bandaid',         // The custom scheme
-      url: '',                 // Optional, leave blank for root
-      androidHost: 'bandaid',    // Only for Android if needed
-    }
+    App: {
+      scheme: 'bandaid', // custom URL scheme
+    },
   },
 };
 

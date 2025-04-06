@@ -11,7 +11,10 @@
   import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
   import { LocalNotifications } from "@capacitor/local-notifications";
   import { ref as dbRef, onChildAdded, remove } from "firebase/database";
+  import { App } from '@capacitor/app';
+  import { useRouter } from 'vue-router'; // or Angular router if you're using Angular
 
+  const router = useRouter();
   const userStore = useUserStore();
   const foodStore = useFoodStore();
 
@@ -75,6 +78,10 @@
       }
     });
   };
+
+  window.handleOpenURL = (url) => {
+  console.log('handleOpenURL received:', url);
+}
 
   onMounted(() => {
     checkUserStatus();

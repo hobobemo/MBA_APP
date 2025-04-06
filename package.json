@@ -34,6 +34,7 @@
     "@ionic/vue-router": "^8.0.0",
     "@vueuse/motion": "^3.0.3",
     "cordova-plugin-customurlscheme": "^5.0.2",
+    "cordova-plugin-deeplinks": "^1.1.1",
     "firebase": "^11.4.0",
     "ionicons": "^7.0.0",
     "leaflet": "^1.9.4",
