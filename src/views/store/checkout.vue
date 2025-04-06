@@ -3,6 +3,7 @@
   import { IonPage, IonContent, IonGrid, IonRow, IonCol, IonButton, IonAlert, IonText } from '@ionic/vue';
   import Header from '@/components/shared/header.vue';
   import Row from '@/components/tickets/checkoutRow.vue';
+  import API from '@/services/API.jsx';
 
   const pageTitle = ref('Checkout');
   let url = ref(null);
@@ -35,14 +36,14 @@
     },
   ]
 
-  // async function getCheckoutLink(){
-  //   ticketsStore.getCart.forEach(item => {
-  //     postData.value.push({price: item.priceId, quantity: item.qty});
-  //   });
-  //   const response = await StripeService.getPayment(postData.value);
-  //   url.value = response.url;
-  //   isOpen.value = true;
-  // }
+  async function getCheckoutLink(){
+    ticketsStore.getCart.forEach(item => {
+      postData.value.push({price: item.priceId, quantity: item.qty});
+    });
+    const response = await API.getStoreCheckout(postData.value);
+    console.log(response);
+    isOpen.value = true;
+  }
   
 </script>
 

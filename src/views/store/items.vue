@@ -2,13 +2,13 @@
   import { ref, onMounted } from 'vue';
   import { IonPage, IonContent } from '@ionic/vue';
   import Header from '@/components/shared/header.vue';
-  import API from '@/services/Concessions.jsx';
+  import API from '@/services/API.jsx';
 
   const pageTitle = ref('Food');
   let items = ref([]);
 
   async function getItems(){
-    const response = await API.getCatalog();
+    const response = await API.getStoreCatalog();
     items.value = response.objects;
   }
 
