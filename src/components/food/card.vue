@@ -1,7 +1,6 @@
 <script setup>
-    import { ref, onMounted } from 'vue';
-    import { IonCard, IonCardContent, IonCardTitle, IonButton, IonImg, IonGrid, IonRow, IonCol, IonNote, IonIcon, IonList, IonItem, IonLabel, IonThumbnail,  } from '@ionic/vue';
-    import { addCircleOutline } from 'ionicons/icons';
+    import { ref } from 'vue';
+    import { IonCard, IonCardHeader, IonCardTitle, IonButton, IonImg, IonNote, IonLabel, } from '@ionic/vue';
     import { useFoodStore } from '@/stores/foodStore.js';
 
     const foodStore = useFoodStore();
@@ -25,21 +24,14 @@
 
 <template>
     <ion-card color="white" v-motion-slide-right>
-        <ion-card-content >
-            <ion-list color="white" class="list">
-                <ion-item color="white" lines="none">
-                    <ion-thumbnail slot="start" v-if="props.image">
-                        <ion-img :src="props.image" />
-                    </ion-thumbnail>
-                    <ion-label>{{ props.item.item_data.name }}</ion-label>
-                </ion-item>
-            </ion-list>
+        <ion-img v-if="props.image" :src="props.image" />
+        <ion-card-header>
+            <ion-card-title>{{ props.item.item_data.name }}</ion-card-title>
+        </ion-card-header>
 
-            <ion-button v-for="(a, i) in props.item.item_data.variations" :key="i" size="small" @click="addToCart(a, props.item.item_data.name)">
-                <ion-icon :icon="addCircleOutline" slot="start" />
-                <ion-label>{{ a.item_variation_data.name }}</ion-label>
-                <ion-note slot="end"><small>${{ (a.item_variation_data.price_money.amount / 100).toFixed(2) }}</small></ion-note>
-            </ion-button>
-        </ion-card-content>
+        <ion-button v-for="(a, i) in props.item.item_data.variations" :key="i" size="small" fill="clear" @click="addToCart(a, props.item.item_data.name)">
+            <ion-label slot="start">{{ a.item_variation_data.name }} - </ion-label>
+            <ion-note slot="end"><small>${{ (a.item_variation_data.price_money.amount / 100).toFixed(2) }}</small></ion-note>
+        </ion-button>
     </ion-card>
 </template>

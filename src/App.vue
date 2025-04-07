@@ -1,5 +1,5 @@
 <script setup>
-  import { IonApp, IonRouterOutlet } from '@ionic/vue';
+  import { IonApp, IonRouterOutlet, useIonRouter } from '@ionic/vue';
   import { onMounted } from 'vue';
   import { StatusBar } from '@capacitor/status-bar';
   import { SplashScreen } from '@capacitor/splash-screen';
@@ -11,10 +11,8 @@
   import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
   import { LocalNotifications } from "@capacitor/local-notifications";
   import { ref as dbRef, onChildAdded, remove } from "firebase/database";
-  import { App } from '@capacitor/app';
-  import { useRouter } from 'vue-router'; // or Angular router if you're using Angular
 
-  const router = useRouter();
+  const router = useIonRouter();
   const userStore = useUserStore();
   const foodStore = useFoodStore();
 
@@ -80,8 +78,23 @@
   };
 
   window.handleOpenURL = (url) => {
-  console.log('handleOpenURL received:', url);
-}
+    try {
+      console.log("Raw URL:", url);
+
+      // Manually extract the path after "://"
+      const pathStart = url.indexOf('://') + 3;
+      const rawPath = url.substring(pathStart); // "payment/success"
+
+      const fullPath = '/' + rawPath;
+      console.log("Corrected path:", fullPath);
+
+      router.push(fullPath).catch(err => {
+        console.warn('Navigation error:', err);
+      });
+    } catch (err) {
+      console.error('Invalid URL format:', url, err);
+    }
+  };
 
   onMounted(() => {
     checkUserStatus();

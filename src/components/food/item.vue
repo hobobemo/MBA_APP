@@ -1,15 +1,11 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import { IonCard, IonCardContent, IonCardTitle, IonButton, IonImg, IonGrid, IonRow, IonCol, } from '@ionic/vue';
     import { Swiper, SwiperSlide } from 'swiper/vue';
     import API from '@/services/API.jsx';
     import Section from '@/components/shared/section.vue';
     import Card from '@/components/food/card.vue';
-    import { useFoodStore } from '@/stores/foodStore.js';
 
-    const foodStore = useFoodStore();
     let image = ref(null);
-    let isLoading = ref(false);
 
     const props = defineProps({
         item: {

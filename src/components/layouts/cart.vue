@@ -3,13 +3,14 @@
     import { IonButtons, IonButton, IonIcon, IonContent, IonModal, IonHeader, IonToolbar, IonTitle, IonList, IonItem, IonSpinner, IonNote, IonBadge, IonLabel, } from '@ionic/vue';
     import { cartOutline, closeCircle, closeCircleOutline, } from 'ionicons/icons';
     import { useFoodStore } from '@/stores/foodStore.js';
+    import { useUserStore } from '@/stores/userStore.js';
     import API from '@/services/API.jsx';
     import { Browser } from '@capacitor/browser'
 
+    const userStore = useUserStore();
     const foodStore = useFoodStore();
     let isOpen = ref(false);
     let isLoading = ref(false);
-    const alertButtons = ['Action'];
 
     function setOpen(value){
         isOpen.value = value;
@@ -22,7 +23,7 @@
     async function checkout() {
       isLoading.value = true;
       try {
-        const response = await API.getStoreCheckout(foodStore.items, foodStore.getCartId);
+        const response = await API.getStoreCheckout(foodStore.items, foodStore.getCartId, userStore.getId);
         await Browser.open({ url: response.payment_link.url });
       } catch (error) {
         console.error('Checkout error:', error);

@@ -3,12 +3,10 @@
   import { IonPage, IonContent, IonProgressBar, } from '@ionic/vue';
   import API from '@/services/API.jsx';
   import Item from '@/components/food/item.vue';
-  import { Swiper, SwiperSlide } from 'swiper/vue';
   import 'swiper/css';
   import { useFoodStore } from '@/stores/foodStore.js';
 
   const foodStore = useFoodStore();
-  const pageTitle = ref('Food');
   let items = ref([]);
   let isLoading = ref(true);
 

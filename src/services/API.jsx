@@ -64,12 +64,13 @@ export default {
         const returnData = response.data
         return returnData;
     },
-    async getStoreCheckout(formData, cartId) {
+    async getStoreCheckout(formData, cartId, userId) {
         const options = {
             url: baseUrl.value + '/store/checkout',
             headers: postSettings.headers,
             data: {
                 id: cartId,
+                user: userId,
                 items: formData,
             }
         }

@@ -73,12 +73,17 @@ const userRoutes = [
     component: () => import('@/views/food/checkout.vue'),
     beforeEnter: authGuard 
   }, {
+    path: '/food/success',
+    meta: { layout: Default },
+    component: () => import('@/views/food/success.vue'),
+    beforeEnter: authGuard 
+  },{
     path: '/store',
     meta: { layout: Default },
     component: () => import('@/views/store/items.vue'),
     beforeEnter: authGuard 
   }, {
-    path: '/payment/success/:id',
+    path: '/payment/success',
     meta: { layout: Default },
     component: () => import('@/views/store/success.vue'),
     beforeEnter: authGuard 
