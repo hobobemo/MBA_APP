@@ -5,10 +5,12 @@ const homeRoutes = [
   {
     path: '/', 
     redirect: '/index',
+    beforeEnter: authGuard 
   }, {
     path: '/index',
     meta: { layout: Default },
     component: () => import('@/views/index.vue'),
+    beforeEnter: authGuard 
   }, {
     path: '/about',
     meta: { layout: Default },

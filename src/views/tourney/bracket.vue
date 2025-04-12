@@ -1,6 +1,6 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import { IonPage, IonContent, IonSegment, IonSegmentButton, IonLabel, IonHeader, IonTitle, IonToolbar, IonProgressBar, IonRefresher, IonRefresherContent, } from '@ionic/vue';
+    import { IonPage, IonContent, IonSegment, IonSegmentButton, IonLabel, IonHeader, IonTitle, IonText, IonToolbar, IonProgressBar, IonRefresher, IonRefresherContent, } from '@ionic/vue';
     import { useRoute } from 'vue-router'
     import API from '@/services/API.jsx';
     import Bracket from '@/components/schedule/brackets.vue';
@@ -50,9 +50,11 @@
 
 <template>
     <ion-page v-if="isLoading">
-        <ion-progress-bar type="indeterminate"  />
+        <ion-content :fullscreen="true">
+            <ion-progress-bar type="indeterminate"  />
+        </ion-content>
     </ion-page>
-    <ion-page v-else>
+    <ion-page v-if="!isLoading">
         <ion-header>
             <ion-toolbar color="primary">
                 <ion-title>{{ items.info.name }}</ion-title>
@@ -80,6 +82,7 @@
                 <Bracket v-if="pageType == 2" :data="loser" />
             </div>
         </ion-content>
+
     </ion-page>
 </template>
 

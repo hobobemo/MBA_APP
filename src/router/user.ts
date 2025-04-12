@@ -63,36 +63,6 @@ const userRoutes = [
     component: () => import('@/views/front/weather.vue'),
     beforeEnter: authGuard 
   }, {
-    path: '/food',
-    meta: { layout: Default },
-    component: () => import('@/views/food/items.vue'),
-    beforeEnter: authGuard 
-  }, {
-    path: '/food-checkout',
-    meta: { layout: Default },
-    component: () => import('@/views/food/checkout.vue'),
-    beforeEnter: authGuard 
-  }, {
-    path: '/food/success',
-    meta: { layout: Default },
-    component: () => import('@/views/food/success.vue'),
-    beforeEnter: authGuard 
-  },{
-    path: '/store',
-    meta: { layout: Default },
-    component: () => import('@/views/store/items.vue'),
-    beforeEnter: authGuard 
-  }, {
-    path: '/payment/success',
-    meta: { layout: Default },
-    component: () => import('@/views/store/success.vue'),
-    beforeEnter: authGuard 
-  }, {
-    path: '/store-checkout',
-    meta: { layout: Default },
-    component: () => import('@/views/store/checkout.vue'),
-    beforeEnter: authGuard 
-  }, {
     path: '/fields',
     meta: { layout: Default },
     component: () => import('@/views/tourney/fields.vue'),

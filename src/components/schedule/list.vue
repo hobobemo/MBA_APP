@@ -1,5 +1,5 @@
 <script setup>
-    import { ref } from 'vue';
+    import { onMounted } from 'vue';
     import { IonText, IonLabel, IonItemSliding, IonItem, IonIcon, IonItemOptions, IonItemOption, IonNote, } from '@ionic/vue';
     import { chevronBackOutline, baseballOutline, gitNetworkOutline } from 'ionicons/icons';
 

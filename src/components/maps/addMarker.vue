@@ -1,11 +1,13 @@
 <script setup>
-  import { ref } from "vue";
-  import { IonPage, IonContent, IonFab, IonFabButton, IonIcon, } from "@ionic/vue";
+  import { IonFab, IonFabButton, IonIcon, } from "@ionic/vue";
   import { Geolocation } from "@capacitor/geolocation";
   import { addOutline } from 'ionicons/icons';
-  import { ref as dbRef, onValue, push, set } from "firebase/database";
-  import { ref as storageRef, getDownloadURL, uploadBytes  } from "firebase/storage";
+  import { ref as dbRef, push, set } from "firebase/database";
+  import { ref as storageRef, uploadBytes  } from "firebase/storage";
   import { database, storage } from "@/firebase"; 
+  import { useUserStore } from '@/stores/userStore.js';
+
+  const userStore = useUserStore();
 
   // Add this function to your script
   const addCurrentLocationMarker = async () => {
@@ -52,7 +54,7 @@
 </script>
 
 <template>
-    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start" v-if="userStore.getLevel > 9">
         <ion-fab-button @click="addCurrentLocationMarker">
             <ion-icon color="white" :icon="addOutline" />
         </ion-fab-button>

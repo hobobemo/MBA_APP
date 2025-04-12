@@ -15,11 +15,6 @@
       title: 'About',
       disabled: false,
     }, { 
-      icon: calendarOutline,
-      href: '/schedule',
-      title: 'Schedule',
-      disabled: false,
-    }, { 
       icon: timerOutline,
       href: '/history',
       title: 'History',
@@ -57,7 +52,7 @@
             <ion-img :src="userStore.getImageUrl" />
         </ion-avatar>
         <ion-title>{{ userStore.getFamilyName }}</ion-title>
-        <ion-button shape="round" slot="end" @click="goTo('/settings')">
+        <ion-button class="no-shadow-button" shape="round" slot="end" @click="goTo('/settings')">
           <ion-icon slot="icon-only" size="small" :icon="settingsOutline" />
         </ion-button>
       </ion-toolbar>
@@ -83,5 +78,9 @@
 <style scoped>
 .footer-list { 
   background: var(--ion-color-primary);
+}
+.no-shadow-button {
+  box-shadow: none !important;
+  --box-shadow: none !important;
 }
 </style>

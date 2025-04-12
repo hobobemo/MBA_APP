@@ -1,6 +1,6 @@
 <script setup>
     import { IonTabBar, IonTabButton, IonLabel, IonIcon, } from '@ionic/vue';
-    import { map, fastFood, baseball, rainy, } from 'ionicons/icons';
+    import { map, calendar, baseball, rainy, storefront, } from 'ionicons/icons';
     import logo from '@/assets/logos/logo.svg';
 
     const items = [
@@ -12,10 +12,10 @@
             size: 'small',
             disabled: false,
         }, {
-            title: 'Map',
-            tab: 'map',
-            href: '/map',
-            icon: map,
+            title: 'Schedule',
+            tab: 'schedule',
+            href: '/schedule',
+            icon: calendar,
             size: 'small',
             disabled: false,
         }, {
@@ -26,17 +26,17 @@
             size: 'large',
             disabled: false,
         }, {
+            title: 'Map',
+            tab: 'map',
+            href: '/map',
+            icon: map,
+            size: 'small',
+            disabled: false,
+        }, {
             title: 'Weather',
             tab: 'weather',
             href: '/weather',
             icon: rainy,
-            size: 'small',
-            disabled: false,
-        }, {
-            title: 'Food',
-            tab: 'food',
-            href: '/food',
-            icon: fastFood,
             size: 'small',
             disabled: false,
         },

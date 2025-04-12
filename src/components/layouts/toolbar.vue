@@ -41,13 +41,11 @@
                 <ion-img :src="Logo" class="header-logo"/>
             </ion-title>
 
-            <Cart v-if="userStore.getAuth" />
             <ion-buttons v-if="userStore.getLevel > 5" slot="end">
                 <ion-button expand="block" @click="openAdminMenu()" size="large">
                     <ion-icon slot="icon-only" aria-hidden="true" :icon="AdminIcon" color="white" />
                 </ion-button>
             </ion-buttons>
-
         </ion-toolbar>
     </ion-header>
 </template>

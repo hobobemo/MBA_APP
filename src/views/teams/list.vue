@@ -8,7 +8,7 @@
   let items = ref(null);
 
   const watchDatabase = () => {
-      const dbRef = refer(database, "tournament");
+      const dbRef = refer(database, "tournament/active");
       onValue(dbRef, (snapshot) => {
           items.value = snapshot.val();
       });
@@ -21,7 +21,7 @@
 
 <template>
   <ion-page>
-      <ion-content :fullscreen="true" v-if="!items == null">
+      <ion-content :fullscreen="true">
         <Division v-for="(a, i) in items" :key="i" :division="a.info" :teams="a.lwcDivisions[0].teams" />     
       </ion-content>
   </ion-page>

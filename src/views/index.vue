@@ -10,10 +10,7 @@ import LatestNews from '@/components/home/latest.vue';
 
 <template>
   <ion-page>
-    <ion-content v-if="isLoading">
-      <ion-progress-bar color="primary" type="indeterminate" />
-    </ion-content>
-    <ion-content v-else :fullscreen="true">
+    <ion-content :fullscreen="true">
       <Header image="headers/IMG_8666.webp" />
 
       <Section title="Events" link="/schedule" />

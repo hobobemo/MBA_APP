@@ -26,7 +26,7 @@
 
 <template>
   <ion-page v-if="isLoading">
-      <ion-progress-bar type="indeterminate" color="secondary" />
+      <ion-progress-bar type="indeterminate" color="primary" />
   </ion-page>
 
   <ion-page v-else>

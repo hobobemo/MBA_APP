@@ -1,4 +1,5 @@
 <script setup>
+    import { onMounted } from 'vue';
     import { IonList, IonListHeader, IonLabel, } from '@ionic/vue';
     import List from '@/components/teams/teamList.vue';
 
@@ -11,7 +12,7 @@
             type: Array,
             required: false,
         }
-    });
+    });   
 </script>
 
 <template>
