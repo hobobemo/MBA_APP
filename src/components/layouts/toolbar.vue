@@ -4,7 +4,6 @@
     import { menuOutline, } from 'ionicons/icons';
     import Logo from '@/assets/logos/text.svg';
     import Login from '@/components/user/login.vue';
-    import Cart from '@/components/layouts/cart.vue';
     import { useUserStore } from '@/stores/userStore';
     import AdminIcon from '@/assets/icons/staff.svg';
 

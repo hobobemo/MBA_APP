@@ -27,12 +27,6 @@
       level: 10,
       disabled: false,
     }, { 
-      icon: locateOutline,
-      href: '/admin/map',
-      title: 'Map',
-      level: 10,
-      disabled: false,
-    }, { 
       icon: walletOutline,
       href: '/admin/sponsors',
       title: 'Sponsors',

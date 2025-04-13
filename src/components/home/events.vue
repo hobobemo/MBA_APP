@@ -21,12 +21,9 @@
 </script>
 
 <template>
-    <swiper
-      :slides-per-view="1.25"
-      :space-between="0"
-    >
+    <swiper :slides-per-view="1.25" :space-between="0">
       <swiper-slide v-for="(item, index) in items" :key="index">
-        <ion-card color="white" :router-link="'/bracket/' + index + '/' + item.seedingReportDivisions[0].divisionID" v-motion-slide-right>
+        <ion-card color="white" :router-link="`/bracket/${index}/${item.seedingReportDivisions[0].divisionID}`" v-motion-slide-right>
           <ion-card-content >
               <ion-list color="white" class="list">
                   <ion-item color="white" lines="none">

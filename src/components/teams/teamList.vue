@@ -2,6 +2,7 @@
     import { ref } from 'vue';
     import { IonText, IonLabel, IonItemSliding, IonItem, IonIcon, IonItemOptions, IonItemOption } from '@ionic/vue';
     import { chevronBackOutline, baseballOutline } from 'ionicons/icons';
+    import Follow from '@/components/teams/followButton.vue';
 
     const props = defineProps({
         team: {
@@ -34,6 +35,7 @@
                 <ion-icon slot="top" :icon="c.icon" />
                 {{ c.title }}
             </ion-item-option>
+            <Follow :team="props.team.TeamID" />
         </ion-item-options>
     </ion-item-sliding>
 </template>

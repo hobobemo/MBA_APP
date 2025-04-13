@@ -1,39 +1,21 @@
 <script setup>
   import { IonApp, IonRouterOutlet, useIonRouter } from '@ionic/vue';
-  import { onMounted } from 'vue';
+  import { ref, onMounted } from 'vue';
   import { StatusBar } from '@capacitor/status-bar';
   import { SplashScreen } from '@capacitor/splash-screen';
   import { useUserStore } from '@/stores/userStore.js';
   import { useFoodStore } from '@/stores/foodStore.js';
-  import { FCM } from '@capacitor-community/fcm';
-  import { PushNotifications } from '@capacitor/push-notifications';
   import { database, auth } from '@/firebase.ts';
   import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
-  import { LocalNotifications } from "@capacitor/local-notifications";
-  import { ref as dbRef, onChildAdded, remove } from "firebase/database";
+  import { LocalNotifications } from '@capacitor/local-notifications';
+  import { ref as dbRef, onChildAdded, remove, update, get, set, child } from "firebase/database";
+  import Helper from '@/helpers/firebase.js';
 
   const router = useIonRouter();
   const userStore = useUserStore();
   const foodStore = useFoodStore();
+  let userLevel = ref(null);
 
-  async function enablePush(){
-    if(await PushNotifications.requestPermissions() === 'granted'){
-      await PushNotifications.register();
-
-      FCM.setAutoInit({ enabled: true });
-
-      FCM.isAutoInitEnabled().then(r => {
-
-        console.log('Auto init is ' + (r.enabled ? 'enabled' : 'disabled'));
-      });
-
-      FCM.getToken().catch(err => console.log(err));
-
-      FCM.subscribeTo({ topic: 'test' })
-      .catch(err => console.log(err));
-    }
-  }
-  
   async function initApp(){
     await StatusBar.setBackgroundColor({color: "#1C3D67"});
     await SplashScreen.show({
@@ -43,67 +25,91 @@
   }
 
   async function checkUserStatus() {
+    let savedUser = ref(null);
     try {
       const user = await FirebaseAuthentication.getCurrentUser();
-      if (user) {
+      if (user) { 
         userStore.login(user.user);
+        savedUser.value = await Helper.getUser(user.user.uid);
+        userStore.setLevel(savedUser.value.level);
       }
     } catch (error) {
 
     }
   }
 
-  // Function to listen for new notifications
-  function listenForNotifications() {
-    const notificationsRef = dbRef(database, `notifications`);
+  async function getUser(userId) {
+    const dataRef = dbRef(database, "users/" + userId);
 
-    onChildAdded(notificationsRef, async (snapshot) => {
-      const notification = snapshot.val();
-
-      if (notification) {
-        // Display local notification
-        await LocalNotifications.schedule({
-          notifications: [
-            {
-              id: Date.now(),
-              title: notification.title,
-              body: notification.body,
-              schedule: { at: new Date(Date.now() + 1000) }, // 1 sec delay
-              sound: "default",
-            },
-          ],
-        });
-      }
-    });
-  };
-
-  window.handleOpenURL = (url) => {
     try {
-      console.log("Raw URL:", url);
-
-      // Manually extract the path after "://"
-      const pathStart = url.indexOf('://') + 3;
-      const rawPath = url.substring(pathStart); // "payment/success"
-
-      const fullPath = '/' + rawPath;
-      console.log("Corrected path:", fullPath);
-
-      router.push(fullPath).catch(err => {
-        console.warn('Navigation error:', err);
-      });
-    } catch (err) {
-      console.error('Invalid URL format:', url, err);
+      const snapshot = await get(dataRef);
+      if (snapshot.exists()) {
+        userLevel.value = snapshot.val();
+      } else {
+        console.warn("User data not found in database");
+        userLevel.value = {}; // Set an empty object to avoid null errors
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
     }
-  };
+  }
+
+  async function enableNotifications() {
+    const permission = await LocalNotifications.requestPermissions();
+    if (permission.display !== 'granted') {
+      console.warn('Local notification permission not granted');
+      return;
+    }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+    if (!user) {
+      console.warn('User not logged in, skipping notifications');
+      return;
+    }
+
+    const userId = user.uid;
+    const alertsRef = dbRef(database, 'notifications');
+    const seenRef = dbRef(database, `users/${userId}/seenNotifications`);
+
+    onChildAdded(alertsRef, async (snapshot) => {
+      const data = snapshot.val();
+      const key = snapshot.key;
+
+      if (!key) return;
+
+      // Check if this notification was already shown
+      const seenSnapshot = await get(child(seenRef, key));
+      if (seenSnapshot.exists()) {
+        return; // Already shown
+      }
+
+      // Show the notification
+      await LocalNotifications.schedule({
+        notifications: [
+          {
+            title: data.title || 'New Alert',
+            body: data.body || 'Something happened!',
+            id: Math.floor(Math.random() * 1000000),
+            schedule: { at: new Date(Date.now() + 100) },
+            smallIcon: 'res://ic_stat_notify',
+            iconColor: '#1C3D67',
+          },
+        ],
+      });
+
+      // Mark this notification as seen
+      await set(child(seenRef, key), true);
+    });
+  }
 
   onMounted(() => {
-    checkUserStatus();
     initApp();
     if(!foodStore){
       foodStore;
     }
-    enablePush();
-    listenForNotifications();
+    checkUserStatus();
+    enableNotifications();
   });
 
 </script>

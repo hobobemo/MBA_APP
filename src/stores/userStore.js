@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 
-
 export const useUserStore = defineStore('user', {
     state: () => {
         return {
@@ -11,7 +10,8 @@ export const useUserStore = defineStore('user', {
                 photoUrl: null,
                 uid: null,
                 level: null,
-            },
+                subscribedTeams: [],
+            },   
         }
     },
     getters: {
@@ -33,6 +33,9 @@ export const useUserStore = defineStore('user', {
         getLevel(state){
             return state.user.level;
         },
+        getSubscriptions(state){
+            return state.user.subscribedTeams;
+        }
     },
     actions: {
         async login(user){
@@ -58,7 +61,22 @@ export const useUserStore = defineStore('user', {
             this.user.email = null
             this.user.photoUrl = null;
             this.user.uid = null;
+            this.user.subscribedTeams = [];
             this.auth = false;
-        }
+        },
+        isSubscribed(teamId) {
+            if (this.user.subscribedTeams.includes(teamId)) {
+              return true;
+            } else {
+              return false;
+            }
+        },
+        async toggleSubscription(teamId) {
+            if (this.user.subscribedTeams.includes(teamId)) {
+              this.user.subscribedTeams = this.user.subscribedTeams.filter(id => id !== teamId)
+            } else {
+              this.user.subscribedTeams.push(teamId)
+            }
+          }
     }
 })
