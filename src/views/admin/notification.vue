@@ -9,6 +9,7 @@
         id: null,
         title: null,
         body: null,
+        team: "teamA",
     });
 
     async function addNotification(){

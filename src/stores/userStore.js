@@ -10,8 +10,8 @@ export const useUserStore = defineStore('user', {
                 photoUrl: null,
                 uid: null,
                 level: null,
-                subscribedTeams: [],
-            },   
+            },  
+            subscribedTeams: [], 
         }
     },
     getters: {
@@ -34,7 +34,7 @@ export const useUserStore = defineStore('user', {
             return state.user.level;
         },
         getSubscriptions(state){
-            return state.user.subscribedTeams;
+            return state.subscribedTeams;
         }
     },
     actions: {
@@ -61,22 +61,27 @@ export const useUserStore = defineStore('user', {
             this.user.email = null
             this.user.photoUrl = null;
             this.user.uid = null;
-            this.user.subscribedTeams = [];
+            this.subscribedTeams = [];
             this.auth = false;
         },
         isSubscribed(teamId) {
-            if (this.user.subscribedTeams.includes(teamId)) {
+            if (this.subscribedTeams.includes(teamId)) {
               return true;
             } else {
               return false;
             }
         },
         async toggleSubscription(teamId) {
-            if (this.user.subscribedTeams.includes(teamId)) {
-              this.user.subscribedTeams = this.user.subscribedTeams.filter(id => id !== teamId)
+            if (this.subscribedTeams.includes(teamId)) {
+              this.subscribedTeams = this.subscribedTeams.filter(id => id !== teamId)
             } else {
-              this.user.subscribedTeams.push(teamId)
+              this.subscribedTeams.push(teamId)
             }
-          }
+        },
+        setSubscriptions(subscriptions){
+            subscriptions.forEach(subscription => {
+                this.subscribedTeams.push(subscription);
+            });
+        }
     }
 })

@@ -1,9 +1,10 @@
 <script setup>
     import { ref, onMounted } from 'vue';
     import { IonItemOptions, IonItemOption, IonIcon } from '@ionic/vue';
+    import { Preferences } from '@capacitor/preferences';
     import { heartOutline, heart } from 'ionicons/icons';
     import { useUserStore } from '@/stores/userStore.js';
-    import { ref as refer, onValue, update, set, } from "firebase/database";
+    import { ref as dbRef, onValue, update, set, } from "firebase/database";
     import { database } from "@/firebase.ts";
 
     const userStore = useUserStore();
@@ -17,6 +18,10 @@
 
     async function action(value){
         userStore.toggleSubscription(value);
+        await Preferences.set({
+            key: 'subscriptions',
+            value: JSON.stringify(userStore.getSubscriptions),
+        });
     }
 
     async function setUser(user) {
