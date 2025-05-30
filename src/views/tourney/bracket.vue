@@ -1,6 +1,6 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import { IonPage, IonContent, IonSegment, IonSegmentButton, IonLabel, IonHeader, IonTitle, IonText, IonToolbar, IonProgressBar, IonRefresher, IonRefresherContent, } from '@ionic/vue';
+    import { IonPage, } from '@ionic/vue';
     import { useRoute } from 'vue-router'
     import API from '@/services/API.jsx';
     import { ref as refer, onValue } from "firebase/database";
@@ -10,21 +10,29 @@
     import Loader from '@/components/shared/loader.vue';
 
     const route = useRoute();
+    let length = ref(null);
     let items = ref(null);
     let winner = ref(null);
     let loser = ref(null);
+    let pool = ref(null);
     let isLoading = ref(true);
     let isReleased = ref(null);
    
     async function getItems(event, div){
         try{
-            const winnerResponse = await API.getBracket(event, div, 1);
+            const winnerResponse = await API.getBracket(event, div, 1, 1);
             winner.value = winnerResponse;
             isReleased.value = winnerResponse.released;
             if(isReleased.value){
                 try {
-                    const loserResponse = await API.getBracket(event, div, 0);
+                    const loserResponse = await API.getBracket(event, div, 0, 1);
                     loser.value = loserResponse;
+                } catch (error){
+                    isReleased.value = false;
+                }
+                try {
+                    const poolResponse = await API.getBracket(event, div, 0, 0);
+                    pool.value = poolResponse;
                 } catch (error){
                     isReleased.value = false;
                 }
@@ -62,20 +70,20 @@
     <ion-page>
         <Loader v-if="isLoading" />
         <NoBracket v-if="!isLoading && !isReleased" />
-        <Bracket v-if="!isLoading && isReleased" :items="items" :winner="winner" :loser="loser" />
+        <Bracket v-if="!isLoading && isReleased" :items="items" :winner="winner" :loser="loser" :pool="pool" />
     </ion-page>
 </template>
 
 <style scoped>
-.custom-refresher {
-  --background: #e0e0e0; /* Change background color */
-}
+    .custom-refresher {
+    --background: #e0e0e0; /* Change background color */
+    }
 
-.custom-refresher .refresher-pulling {
-  --icon-color: #ff4500; /* Change pull icon color */
-}
+    .custom-refresher .refresher-pulling {
+    --icon-color: #ff4500; /* Change pull icon color */
+    }
 
-.custom-refresher .refresher-refresh {
-  --spinner-color: #007bff; /* Change spinner color */
-}
+    .custom-refresher .refresher-refresh {
+    --spinner-color: #007bff; /* Change spinner color */
+    }
 </style>

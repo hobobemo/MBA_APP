@@ -19,9 +19,9 @@ const postSettings = {
 };
 
 export default {
-    async getBracket(event, div, winner) {
+    async getBracket(event, div, winner, type) {
         const options = {
-            url: baseUrl.value + '/bracket/' + event + '/' + div + '/' + winner,
+            url: baseUrl.value + '/bracket/' + event + '/' + div + '/' + winner + '/' + type,
             headers: getSettings.headers,
         }
         const response = await CapacitorHttp.get(options);

@@ -1,8 +1,9 @@
 <script setup>
+    import { ref } from 'vue';
     import Bracket from '@/components/schedule/brackets.vue';
-    import { IonContent, IonSegment, IonSegmentButton, IonLabel, IonHeader, IonTitle, IonText, IonToolbar, IonProgressBar, IonRefresher, IonRefresherContent, } from '@ionic/vue';
+    import Pool from '@/components/schedule/pool.vue';
+    import { IonContent, IonSegment, IonSegmentButton, IonLabel, IonHeader, IonTitle, IonToolbar, IonRefresher, IonRefresherContent, } from '@ionic/vue';
 
-    let length = ref(null);
     const pageType = ref(1);
 
     const props = defineProps({
@@ -17,6 +18,10 @@
         loser: {
             type: Object,
             required: false
+        },
+        pool: {
+            type: Object,
+            required: false,
         }
     });
 </script>
@@ -27,11 +32,14 @@
                 <ion-title>{{ props.items.info.name }}</ion-title>
             </ion-toolbar>
             <ion-toolbar color="white">
-                <ion-segment :value="1" v-if="length > 1">
-                    <ion-segment-button :value=1 @click="pageType = 1">
+                <ion-segment :value="1">
+                    <ion-segment-button v-if="props.pool.pools" :value="0" @click="pageType = 0">
+                        <ion-label color="secondary">Pool</ion-label>
+                    </ion-segment-button>
+                    <ion-segment-button :value="1" @click="pageType = 1">
                         <ion-label color="secondary">Winner</ion-label>
                     </ion-segment-button>
-                    <ion-segment-button :value=2 @click="pageType = 2">
+                    <ion-segment-button :value="2" @click="pageType = 2">
                         <ion-label color="secondary">Loser</ion-label>
                     </ion-segment-button>
                 </ion-segment>
@@ -43,7 +51,8 @@
                 <ion-refresher-content />
             </ion-refresher>
 
-            <div v-if="!isLoading">
+            <div>
+                <Pool v-if="pageType == 0" :data="props.pool" />
                 <Bracket v-if="pageType == 1" :data="props.winner" />
                 <Bracket v-if="pageType == 2" :data="props.loser" />
             </div>

@@ -52,9 +52,6 @@
             <ion-img :src="userStore.getImageUrl" />
         </ion-avatar>
         <ion-title>{{ userStore.getFamilyName }}</ion-title>
-        <ion-button class="no-shadow-button" shape="round" slot="end" @click="goTo('/settings')">
-          <ion-icon slot="icon-only" size="small" :icon="settingsOutline" />
-        </ion-button>
       </ion-toolbar>
     </ion-header>
 
