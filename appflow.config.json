@@ -7,6 +7,7 @@
   "ios": {
     "path": "ios"
   },
+  "plugins": [],
   "build": {
     "capacitor": {
       "platform": "ios"
