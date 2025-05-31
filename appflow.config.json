@@ -6,5 +6,10 @@
   },
   "ios": {
     "path": "ios"
+  },
+  "build": {
+    "capacitor": {
+      "platform": "ios"
+    }
   }
 }
