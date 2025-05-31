@@ -61,6 +61,7 @@ export const useUserStore = defineStore('user', {
             this.user.email = null
             this.user.photoUrl = null;
             this.user.uid = null;
+            this.user.level = null;
             this.subscribedTeams = [];
             this.auth = false;
         },
