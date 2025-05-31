@@ -1,5 +1,5 @@
 {
-  "name": "app.militarybandaid.mobile",
+  "name": "MBA_APP",
   "type": "capacitor",
   "integrations": {
     "cordova": {},
@@ -15,7 +15,7 @@
     {
       "id": "cordova-plugin-customurlscheme",
       "config": {
-        "URL_SCHEME": "bandaid"
+        "URL_SCHEME": "militarybandaid"
       }
     }
   ],
@@ -27,10 +27,6 @@
     "capacitor": {
       "platform": "ios",
       "plugins": [],
-      "android": {
-        "buildFlavor": "",
-        "gradleCommand": ""
-      },
       "ios": {
         "scheme": "",
         "configuration": ""
