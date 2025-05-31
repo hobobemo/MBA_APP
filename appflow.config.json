@@ -2,6 +2,7 @@
   "name": "MBA_APP",
   "type": "capacitor",
   "integrations": {
+    "cordova": {},
     "capacitor": {}
   },
   "ios": {
@@ -11,12 +12,17 @@
     {
       "id": "cordova-plugin-customurlscheme",
       "config": {
-        "URL_SCHEME": "bandaid"
+        "URL_SCHEME": "militarybandaid"
       }
     }
   ],
+  "web": {
+    "path": "www"
+  },
   "build": {
-    "cordova": {},
+    "cordova": {
+      "preferences": {}
+    },
     "capacitor": {
       "platform": "ios"
     }
