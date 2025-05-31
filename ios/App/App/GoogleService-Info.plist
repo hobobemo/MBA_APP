@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>773568031624-kaqvnj0m91lgj84fj1d12lsvdjn1dcbs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.773568031624-kaqvnj0m91lgj84fj1d12lsvdjn1dcbs</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>773568031624-bcdohlm1f8jn9rsaaakgt0l27u59buqs.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAjtdvJnJmkqWF2YMYYrIJ0CBjuvmWSjCQ</string>
+	<key>GCM_SENDER_ID</key>
+	<string>773568031624</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>app.militarybandaid.mobile</string>
+	<key>PROJECT_ID</key>
+	<string>band-aid-575fe</string>
+	<key>STORAGE_BUCKET</key>
+	<string>band-aid-575fe.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:773568031624:ios:34d42af159ff8f0d59683d</string>
+	<key>DATABASE_URL</key>
+	<string>https://band-aid-575fe-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
