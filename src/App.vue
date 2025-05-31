@@ -4,16 +4,13 @@ import { ref, onMounted } from 'vue';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { useUserStore } from '@/stores/userStore.js';
-import { useFoodStore } from '@/stores/foodStore.js';
-import { Preferences } from '@capacitor/preferences';
 import { database } from '@/firebase.ts';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
+import { ref as dbRef, get, onChildAdded, remove } from 'firebase/database';
 import { LocalNotifications } from '@capacitor/local-notifications';
-import { ref as dbRef, onChildAdded, get } from 'firebase/database';
 import Helper from '@/helpers/firebase.js';
 
 const userStore = useUserStore();
-const foodStore = useFoodStore();
 const userLevel = ref(null);
 const savedUser = ref(null);
 
@@ -21,6 +18,11 @@ const savedUser = ref(null);
 async function initApp() {
   await StatusBar.setBackgroundColor({ color: "#1C3D67" });
   await SplashScreen.show({ showDuration: 2000, autoHide: true });
+
+  const { display } = await LocalNotifications.requestPermissions();
+  if (display !== 'granted') {
+    console.warn('Notification permission not granted');
+  }
 }
 
 // ✅ Fetch user info from Firebase
@@ -34,6 +36,34 @@ async function getUser(userId) {
   }
 }
 
+// ✅ Start Firebase listener and auto-delete after display
+function startNotificationWatcher(userId) {
+  const notiRef = dbRef(database, `notifications/${userId}`);
+
+  onChildAdded(notiRef, async (snapshot) => {
+    const noti = snapshot.val();
+    const notiKey = snapshot.key;
+
+    if (!noti || !noti.title || !notiKey) return;
+
+    await LocalNotifications.schedule({
+      notifications: [{
+        id: noti.id,
+        title: noti.title,
+        body: noti.body,
+        schedule: { at: new Date(Date.now() + 100) },
+        smallIcon: 'ic_stat_notify',
+      }]
+    });
+
+    console.log('🔔 Local notification shown and removing from DB:', noti);
+
+    // ✅ Remove notification from Firebase after display
+    const removeRef = dbRef(database, `notifications/${userId}/${notiKey}`);
+    await remove(removeRef);
+  });
+}
+
 // ✅ Main login logic
 async function checkUserStatus() {
   try {
@@ -43,7 +73,8 @@ async function checkUserStatus() {
       userStore.login(user);
       savedUser.value = await Helper.getUser(user.uid);
       userStore.setLevel(savedUser.value.level);
-      await enableNotifications(user.uid);
+
+      startNotificationWatcher(user.uid); // 👈 Start DB notification listener
     }
   } catch (error) {
     console.error("Failed to check user status:", error);

@@ -16,6 +16,7 @@
   "dependencies": {
     "@capacitor-community/fcm": "^7.1.0",
     "@capacitor-firebase/authentication": "^7.1.0",
+    "@capacitor-firebase/messaging": "^7.2.0",
     "@capacitor-firebase/storage": "^7.1.0",
     "@capacitor/android": "7.1.0",
     "@capacitor/app": "^7.0.0",
@@ -28,7 +29,7 @@
     "@capacitor/keyboard": "7.0.0",
     "@capacitor/local-notifications": "^7.0.0",
     "@capacitor/preferences": "^7.0.1",
-    "@capacitor/push-notifications": "^7.0.0",
+    "@capacitor/push-notifications": "^7.0.1",
     "@capacitor/splash-screen": "^7.0.0",
     "@capacitor/status-bar": "7.0.0",
     "@ionic/vue": "^8.0.0",

@@ -32,6 +32,12 @@
       title: 'Sponsors',
       level: 8,
       disabled: false,
+    }, { 
+      icon: walletOutline,
+      href: '/admin/notifications',
+      title: 'Notification',
+      level: 10,
+      disabled: false,
     },
   ];
 
