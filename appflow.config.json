@@ -7,7 +7,14 @@
   "ios": {
     "path": "ios"
   },
-  "plugins": [],
+  "plugins": [
+    {
+      "id": "cordova-plugin-customurlscheme",
+      "config": {
+        "URL_SCHEME": "bandaid"
+      }
+    }
+  ],
   "build": {
     "cordova": {},
     "capacitor": {
