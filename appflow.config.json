@@ -9,6 +9,7 @@
   },
   "plugins": [],
   "build": {
+    "cordova": {},
     "capacitor": {
       "platform": "ios"
     }
