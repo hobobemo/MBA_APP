@@ -1,12 +1,11 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import { IonPage, } from '@ionic/vue';
+    import { IonPage, IonRefresher, IonRefresherContent,} from '@ionic/vue';
     import { useRoute } from 'vue-router'
     import API from '@/services/API.jsx';
     import { ref as refer, onValue } from "firebase/database";
     import { database } from "@/firebase.ts";
     import Bracket from '@/components/schedule/bracket.vue';
-    import NoBracket from '@/components/schedule/bracketError.vue';
     import Loader from '@/components/shared/loader.vue';
 
     const route = useRoute();
@@ -18,7 +17,7 @@
     let isLoading = ref(true);
     let isReleased = ref(null);
    
-    async function getItems(event, div){
+    async function getItems(event, div, value){
         try{
             const winnerResponse = await API.getBracket(event, div, 1, 1);
             winner.value = winnerResponse;
@@ -40,6 +39,11 @@
         } catch (error) {
             isReleased.value = false;
         }
+
+        if(value != null){
+            value.target.complete();
+        }
+       
         isLoading.value = false;
     }
 
@@ -51,26 +55,16 @@
         });
     };
 
-    function handleRefresh(event) {
-        setTimeout(() => {
-            isLoading.value = true;
-            getItems(route.params.event, route.params.div);
-            isLoading.value = false;
-            event.target.complete();
-        }, 2000);
-      };
-
     onMounted(() => {
         watchDatabase(route.params.event);
-        getItems(route.params.event, route.params.div);
+        getItems(route.params.event, route.params.div, null);
     });
 </script>
 
 <template>
     <ion-page>
         <Loader v-if="isLoading" />
-        <NoBracket v-if="!isLoading && !isReleased" />
-        <Bracket v-if="!isLoading && isReleased" :items="items" :winner="winner" :loser="loser" :pool="pool" />
+        <Bracket v-if="!isLoading && isReleased" :items="items" :winner="winner" :loser="loser" :pool="pool" @refreshData="getItems(route.params.event, route.params.div, $event)"/>
     </ion-page>
 </template>
 
