@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>Military Band-Aid</string>
+        <string>Military Band-Aid</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -45,18 +45,14 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
-	<key>NSCameraUsageDescription</key>
-	<string>We need access to your camera.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>We need access to your photo library.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
-	<dict>
-	<key>CFBundleURLSchemes</key>
-	<array>
-	<string>$URL_SCHEME</string>
-	</array>
-	</dict>
+       <dict>
+       	<key>CFBundleURLSchemes</key>
+       		<array>
+       			<string>$URL_SCHEME</string>
+			</array>
+		</dict>
 	</array>
 </dict>
 </plist>
