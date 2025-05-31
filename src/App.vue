@@ -84,6 +84,17 @@ async function checkUserStatus() {
 onMounted(async () => {
   await initApp();
   await checkUserStatus();
+
+  try {
+    const { display } = await LocalNotifications.requestPermissions();
+    if (display !== 'granted') {
+      console.warn('❌ Local notification permission NOT granted');
+    } else {
+      console.log('✅ Local notification permission granted');
+    }
+  } catch (err) {
+    console.error('⚠️ Failed to request local notification permission:', err);
+  }
 });
 </script>
 
