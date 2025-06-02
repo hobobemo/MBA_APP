@@ -19,16 +19,6 @@ const savedUser = ref(null);
 const deferredPrompt = ref(null);
 const showInstall = ref(false);
 
-// ✅ Initialize app UI
-async function initApp() {
-  await StatusBar.setBackgroundColor({ color: "#1C3D67" });
-  await SplashScreen.show({ showDuration: 2000, autoHide: true });
-
-  const { display } = await LocalNotifications.requestPermissions();
-  if (display !== 'granted') {
-    console.warn('Notification permission not granted');
-  }
-}
 
 // ✅ Fetch user info from Firebase
 async function getUser(userId) {
@@ -105,21 +95,19 @@ window.addEventListener('beforeinstallprompt', (e) => {
 });
 
 onMounted(async () => {
-  await initApp();
   await checkUserStatus();
 
   if (Notification && Notification.permission !== 'granted') {
     await Notification.requestPermission();
   }
 
-  // Auto-prompt install if you'd rather not use a button:
-  // if (deferredPrompt.value) {
-  //   deferredPrompt.value.prompt();
-  //   const choice = await deferredPrompt.value.userChoice;
-  //   console.log('Install result:', choice);
-  //   deferredPrompt.value = null;
-  //   showInstall.value = false;
-  // }
+  if (deferredPrompt.value) {
+    deferredPrompt.value.prompt();
+    const choice = await deferredPrompt.value.userChoice;
+    console.log('Install result:', choice);
+    deferredPrompt.value = null;
+    showInstall.value = false;
+  }
 });
 </script>
 
@@ -128,19 +116,5 @@ onMounted(async () => {
     <component :is="$route.meta.layout || 'div'">
       <ion-router-outlet />
     </component>
-
-    <!-- Optional install button -->
-    <ion-button v-if="showInstall" @click="installPWA" class="install-btn">
-      Install App
-    </ion-button>
   </ion-app>
 </template>
-
-<style scoped>
-.install-btn {
-  position: fixed;
-  bottom: 16px;
-  right: 16px;
-  z-index: 999;
-}
-</style>
