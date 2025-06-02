@@ -67,6 +67,7 @@
 
     if (snapshot.exists()) {
       const userResponse = snapshot.val();
+      console.log(userResponse);
       users.value = userResponse;
     } else {
       console.log('No users found.');

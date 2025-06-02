@@ -16,7 +16,7 @@ export default defineConfig({
       includeAssets: ['favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
       manifest: {
         name: 'Military Band-Aid',
-        short_name: 'MBA',
+        short_name: 'Military Band-Aid',
         start_url: '.',
         display: 'standalone',
         background_color: '#ffffff',
