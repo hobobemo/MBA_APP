@@ -19,7 +19,6 @@ const savedUser = ref(null);
 const deferredPrompt = ref(null);
 const showInstall = ref(false);
 
-
 // ✅ Fetch user info from Firebase
 async function getUser(userId) {
   const dataRef = dbRef(database, `users/${userId}`);
