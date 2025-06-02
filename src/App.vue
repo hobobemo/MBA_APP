@@ -1,5 +1,5 @@
 <script setup>
-import { IonApp, IonRouterOutlet } from '@ionic/vue';
+import { IonApp, IonRouterOutlet, IonButton } from '@ionic/vue';
 import { ref, onMounted } from 'vue';
 import { StatusBar } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
@@ -10,9 +10,14 @@ import { ref as dbRef, get, onChildAdded, remove } from 'firebase/database';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import Helper from '@/helpers/firebase.js';
 
+// State
 const userStore = useUserStore();
 const userLevel = ref(null);
 const savedUser = ref(null);
+
+// PWA install logic
+const deferredPrompt = ref(null);
+const showInstall = ref(false);
 
 // ✅ Initialize app UI
 async function initApp() {
@@ -58,7 +63,6 @@ function startNotificationWatcher(userId) {
 
     console.log('🔔 Local notification shown and removing from DB:', noti);
 
-    // ✅ Remove notification from Firebase after display
     const removeRef = dbRef(database, `notifications/${userId}/${notiKey}`);
     await remove(removeRef);
   });
@@ -74,27 +78,48 @@ async function checkUserStatus() {
       savedUser.value = await Helper.getUser(user.uid);
       userStore.setLevel(savedUser.value.level);
 
-      startNotificationWatcher(user.uid); // 👈 Start DB notification listener
+      startNotificationWatcher(user.uid);
     }
   } catch (error) {
     console.error("Failed to check user status:", error);
   }
 }
 
+// ✅ Handle manual install button
+function installPWA() {
+  if (deferredPrompt.value) {
+    deferredPrompt.value.prompt();
+    deferredPrompt.value.userChoice.then((choiceResult) => {
+      console.log('User choice:', choiceResult);
+      deferredPrompt.value = null;
+      showInstall.value = false;
+    });
+  }
+}
+
+// ✅ Capture install prompt event
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt.value = e;
+  showInstall.value = true;
+});
+
 onMounted(async () => {
   await initApp();
   await checkUserStatus();
 
-  try {
-    const { display } = await LocalNotifications.requestPermissions();
-    if (display !== 'granted') {
-      console.warn('❌ Local notification permission NOT granted');
-    } else {
-      console.log('✅ Local notification permission granted');
-    }
-  } catch (err) {
-    console.error('⚠️ Failed to request local notification permission:', err);
+  if (Notification && Notification.permission !== 'granted') {
+    await Notification.requestPermission();
   }
+
+  // Auto-prompt install if you'd rather not use a button:
+  // if (deferredPrompt.value) {
+  //   deferredPrompt.value.prompt();
+  //   const choice = await deferredPrompt.value.userChoice;
+  //   console.log('Install result:', choice);
+  //   deferredPrompt.value = null;
+  //   showInstall.value = false;
+  // }
 });
 </script>
 
@@ -103,5 +128,19 @@ onMounted(async () => {
     <component :is="$route.meta.layout || 'div'">
       <ion-router-outlet />
     </component>
+
+    <!-- Optional install button -->
+    <ion-button v-if="showInstall" @click="installPWA" class="install-btn">
+      Install App
+    </ion-button>
   </ion-app>
 </template>
+
+<style scoped>
+.install-btn {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 999;
+}
+</style>
