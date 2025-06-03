@@ -1,10 +1,10 @@
 <script setup>
     import { ref, onMounted } from 'vue';
-    import { IonPage, IonContent } from '@ionic/vue';
+    import { IonPage, IonContent, IonList, } from '@ionic/vue';
     import { ref as refer, onValue } from "firebase/database";
     import { database } from "@/firebase.ts"; 
     import LearnMore from '@/components/sponsors/learnMore.vue';
-    import Card from '@/components/sponsors/card.vue';
+    import Item from '@/components/sponsors/item.vue';
 
     let items = ref(null);
 
@@ -23,7 +23,9 @@
 <template>
     <ion-page>
         <ion-content :fullscreen="true">
-            <Card v-for="(a, i) in items" :key="i" :sponsor="a" v-motion-slide-visible-once-bottom class="card-container" />
+            <ion-list class="list">
+                <Item v-for="(a, i) in items" :key="i" :sponsor="a" v-motion-slide-visible-once-bottom />
+            </ion-list>  
         </ion-content>
     </ion-page>
 </template>

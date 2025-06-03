@@ -1,25 +1,42 @@
 <script setup>
 import { IonApp, IonRouterOutlet, IonButton } from '@ionic/vue';
 import { ref, onMounted } from 'vue';
-import { StatusBar } from '@capacitor/status-bar';
-import { SplashScreen } from '@capacitor/splash-screen';
 import { useUserStore } from '@/stores/userStore.js';
 import { database } from '@/firebase.ts';
 import { FirebaseAuthentication } from '@capacitor-firebase/authentication';
 import { ref as dbRef, get, onChildAdded, remove } from 'firebase/database';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { Capacitor } from '@capacitor/core';
 import Helper from '@/helpers/firebase.js';
 
 // State
 const userStore = useUserStore();
 const userLevel = ref(null);
 const savedUser = ref(null);
-
-// PWA install logic
 const deferredPrompt = ref(null);
 const showInstall = ref(false);
 
-// ✅ Fetch user info from Firebase
+// ✅ Notification logic (hybrid)
+function showNotification(noti) {
+  if (Capacitor.isNativePlatform()) {
+    return LocalNotifications.schedule({
+      notifications: [{
+        id: noti.id || Date.now(),
+        title: noti.title,
+        body: noti.body,
+        schedule: { at: new Date(Date.now() + 100) },
+        smallIcon: 'ic_stat_notify',
+      }]
+    });
+  } else if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification(noti.title, {
+      body: noti.body,
+      icon: '/icons/icon-192x192.png'
+    });
+  }
+}
+
+// ✅ Fetch user info
 async function getUser(userId) {
   const dataRef = dbRef(database, `users/${userId}`);
   try {
@@ -30,34 +47,23 @@ async function getUser(userId) {
   }
 }
 
-// ✅ Start Firebase listener and auto-delete after display
+// ✅ Watch Firebase for new notifications
 function startNotificationWatcher(userId) {
   const notiRef = dbRef(database, `notifications/${userId}`);
-
   onChildAdded(notiRef, async (snapshot) => {
     const noti = snapshot.val();
     const notiKey = snapshot.key;
 
     if (!noti || !noti.title || !notiKey) return;
 
-    await LocalNotifications.schedule({
-      notifications: [{
-        id: noti.id,
-        title: noti.title,
-        body: noti.body,
-        schedule: { at: new Date(Date.now() + 100) },
-        smallIcon: 'ic_stat_notify',
-      }]
-    });
-
-    console.log('🔔 Local notification shown and removing from DB:', noti);
+    await showNotification(noti);
 
     const removeRef = dbRef(database, `notifications/${userId}/${notiKey}`);
     await remove(removeRef);
   });
 }
 
-// ✅ Main login logic
+// ✅ User status & login check
 async function checkUserStatus() {
   try {
     const response = await FirebaseAuthentication.getCurrentUser();
@@ -66,7 +72,6 @@ async function checkUserStatus() {
       userStore.login(user);
       savedUser.value = await Helper.getUser(user.uid);
       userStore.setLevel(savedUser.value.level);
-
       startNotificationWatcher(user.uid);
     }
   } catch (error) {
@@ -74,38 +79,30 @@ async function checkUserStatus() {
   }
 }
 
-// ✅ Handle manual install button
+// ✅ Prompt to install PWA
 function installPWA() {
   if (deferredPrompt.value) {
     deferredPrompt.value.prompt();
-    deferredPrompt.value.userChoice.then((choiceResult) => {
-      console.log('User choice:', choiceResult);
+    deferredPrompt.value.userChoice.then(() => {
       deferredPrompt.value = null;
       showInstall.value = false;
     });
   }
 }
 
-// ✅ Capture install prompt event
+// ✅ Catch browser install event
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt.value = e;
   showInstall.value = true;
 });
 
+// ✅ On mount
 onMounted(async () => {
   await checkUserStatus();
 
-  if (Notification && Notification.permission !== 'granted') {
+  if ('Notification' in window && Notification.permission !== 'granted') {
     await Notification.requestPermission();
-  }
-
-  if (deferredPrompt.value) {
-    deferredPrompt.value.prompt();
-    const choice = await deferredPrompt.value.userChoice;
-    console.log('Install result:', choice);
-    deferredPrompt.value = null;
-    showInstall.value = false;
   }
 });
 </script>
@@ -114,6 +111,19 @@ onMounted(async () => {
   <ion-app>
     <component :is="$route.meta.layout || 'div'">
       <ion-router-outlet />
+      <ion-button v-if="showInstall" @click="installPWA" class="install-button" expand="block">
+        Install App
+      </ion-button>
     </component>
   </ion-app>
 </template>
+
+<style scoped>
+.install-button {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  z-index: 999;
+}
+</style>

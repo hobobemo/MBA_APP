@@ -32,12 +32,6 @@
       title: 'Sponsors',
       level: 8,
       disabled: false,
-    }, { 
-      icon: walletOutline,
-      href: '/admin/notifications',
-      title: 'Notification',
-      level: 10,
-      disabled: false,
     },
   ];
 
@@ -55,7 +49,7 @@
 </script>
 
 <template>
-  <ion-menu menu-id="admin-menu" side="end" contentId="main-content">
+  <ion-menu menu-id="admin-menu" side="end" contentId="main-content" v-if="userStore.getLevel > 5">
 
     <ion-header>
       <ion-toolbar class="ion-text-center" color="primary">

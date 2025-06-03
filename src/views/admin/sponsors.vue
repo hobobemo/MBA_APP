@@ -5,24 +5,6 @@
     import { database, storage } from "@/firebase.ts";
     import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "firebase/storage";
 
-    const levels = [
-        {
-            value: 0,
-            title: "Homerun",
-        }, {
-            value: 1,
-            title: "Triple",
-        }, {
-            value: 2,
-            title: "Double",
-        }, {
-            value: 3,
-            title: "Single",
-        }
-    ];
-
-    let level = ref(null);
-
     // Form Data
     let formData = ref({
         name: null,
@@ -53,7 +35,7 @@
 
     // Upload to Firebase Storage and Save in Database
     async function addNewMessage() {
-        if (!file.value || !formData.value.name || !formData.value.url || !level.value == null ) {
+        if (!file.value || !formData.value.name || !formData.value.url ) {
             toast.value = {
                 message: "Please complete all fields before submitting.",
                 color: "danger"
@@ -75,7 +57,7 @@
             formData.value.logo = directory;
 
             // Push the data to Firebase Realtime Database
-            await push(dbRef(database, "front/sponsors/" + level.value + "/items"), formData.value);
+            await push(dbRef(database, "front/sponsors"), formData.value);
 
             // Reset form
             formData.value = { 
@@ -107,10 +89,6 @@
     function changeForm(field, event) {
         formData.value[field] = event.detail.value;
     }
-
-    function changeLevel(value){
-        level.value = value.detail.value;
-    }
 </script>
 
 <template>
@@ -119,12 +97,6 @@
             <ion-card color="white">
                 <ion-card-content>
                     <ion-list class="list">
-                        <ion-item color="white">
-                            <ion-select placeholder="Sponsorship Level" @ionChange="changeLevel($event)">
-                                <ion-label slot="label">Sponsorship Level</ion-label>
-                                <ion-select-option v-for="(a, i) in levels" :key="i" :value="a.value">{{ a.title }}</ion-select-option>
-                            </ion-select>
-                        </ion-item>
                         <ion-item color="white">
                             <ion-input label="Company" placeholder="Company Name" @ionInput="changeForm('name', $event)"></ion-input>
                         </ion-item>

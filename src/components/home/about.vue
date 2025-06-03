@@ -22,7 +22,7 @@
 </script>
 
 <template>
-    <ion-card color="light" v-motion-slide-visible-bottom :delay="200">
+    <ion-card color="white" v-motion-slide-visible-bottom :delay="200">
         <div class="image-container">
             <ion-img class="header-image" :src="imageUrl" />
             <div class="about-image-layer"></div>

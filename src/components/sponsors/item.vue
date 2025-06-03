@@ -22,7 +22,7 @@
 </script>
 
 <template>
-    <ion-item color="white" v-motion-slide-right :delay="200" :href="props.sponsor.href">
+    <ion-item color="white" v-motion-slide-right :delay="200" :href="props.sponsor.url">
         <ion-thumbnail slot="start">
             <ion-img :src="image" />
         </ion-thumbnail>

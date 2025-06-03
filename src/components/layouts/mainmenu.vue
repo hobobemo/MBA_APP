@@ -44,7 +44,7 @@
 </script>
 
 <template>
-  <ion-menu menu-id="main-menu" side="start" contentId="main-content">
+  <ion-menu menu-id="main-menu" side="start" contentId="main-content" v-if="userStore.getAuth">
 
     <ion-header>
       <ion-toolbar class="ion-text-center" color="primary">
